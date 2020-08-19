@@ -3,6 +3,7 @@ import React from 'react'
 import { Line } from 'react-chartjs-2'
 import { datas } from './data'
 
+const colorDarkGreen = '#19977e';
 const colorMedian = '#24c9a8';
 const colorRangeBorder = '#d5f5ef';
 const colorRangeFill = '#d5f5ef';
@@ -38,14 +39,14 @@ const customTooltips = function(tooltip) {
   if (tooltip.dataPoints) {
     var innerHtml = '<thead>';
 
-    var numSubjects = parseInt(tooltip.dataPoints[0].value)
+    var numPeeps = parseInt(tooltip.dataPoints[0].value)
 
-    if (numSubjects === 1) {
-      innerHtml += '<tr><th><br /><b>First Subject First Dose</b></th></tr>';
-    } else if (numSubjects === 333) {
-      innerHtml += '<tr><th><br /><b>Last Subject First Dose</b></th></tr>';
+    if (numPeeps === 1) {
+      innerHtml += '<tr><th><b>First</b></th></tr>';
+    } else if (numPeeps === 333) {
+      innerHtml += '<tr><th><b>Last</b></th></tr>';
     } else {
-      innerHtml += '<tr><th><br /><b>' + numSubjects + ' subjects</b></th></tr>';
+      innerHtml += '<tr><th><b>' + numPeeps + ' peeps</b></th></tr>';
     }
     innerHtml += '</thead><tbody>';
 
@@ -72,11 +73,17 @@ const customTooltips = function(tooltip) {
   tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
 };
 
+const pointColor = ({ dataset, dataIndex }) => {
+  const point = dataset.data[dataIndex];
+  const color = point.y === 1 || point.y === 333 ? colorDarkGreen : colorMedian;
+  return color;
+}
+
 const data = {
   datasets: [
     {
       label: 'Median',
-      backgroundColor: colorMedian,
+      pointBackgroundColor: pointColor,
       borderColor: colorMedian,
       fill: false,
       data: datas.median.filter(tens)
@@ -128,7 +135,7 @@ const options = {
       },
       scaleLabel: {
         display: true,
-        labelString: 'subjects'
+        labelString: 'peeps'
       },
       ticks: {
         precision: 0,
