@@ -1,22 +1,22 @@
-import React from 'react'
+import React from "react";
 
-import { Line } from 'react-chartjs-2'
-import { datas } from './data'
+import { Line } from "react-chartjs-2";
+import { datas } from "./data";
 
-const colorMedian = '#24c9a8';
-const colorRangeBorder = '#d5f5ef';
-const colorRangeFill = '#d5f5ef';
+const colorMedian = "#24c9a8";
+const colorRangeBorder = "#d5f5ef";
+const colorRangeFill = "#d5f5ef";
 
-const tens = (point) => point.y === 1 || point.y === 333 || point.y % 10 === 0
+const tens = (point) => point.y === 1 || point.y === 333 || point.y % 10 === 0;
 
-const customTooltips = function(tooltip) {
+const customTooltips = function (tooltip) {
   // Tooltip Element
-  var tooltipEl = document.getElementById('chartjs-tooltip');
+  var tooltipEl = document.getElementById("chartjs-tooltip");
 
   if (!tooltipEl) {
-    tooltipEl = document.createElement('div');
-    tooltipEl.id = 'chartjs-tooltip';
-    tooltipEl.innerHTML = '<table></table>';
+    tooltipEl = document.createElement("div");
+    tooltipEl.id = "chartjs-tooltip";
+    tooltipEl.innerHTML = "<table></table>";
     this._chart.canvas.parentNode.appendChild(tooltipEl);
   }
 
@@ -27,35 +27,39 @@ const customTooltips = function(tooltip) {
   }
 
   // Set caret Position
-  tooltipEl.classList.remove('above', 'below', 'no-transform');
+  tooltipEl.classList.remove("above", "below", "no-transform");
   if (tooltip.yAlign) {
     tooltipEl.classList.add(tooltip.yAlign);
   } else {
-    tooltipEl.classList.add('no-transform');
+    tooltipEl.classList.add("no-transform");
   }
 
   // Set Text
   if (tooltip.dataPoints) {
-    var innerHtml = '<thead>';
+    var innerHtml = "<thead>";
 
-    var numSubjects = parseInt(tooltip.dataPoints[0].value)
+    var numSubjects = parseInt(tooltip.dataPoints[0].value);
 
     if (numSubjects === 1) {
-      innerHtml += '<tr><th><br /><b>First Subject First Dose</b></th></tr>';
+      innerHtml += "<tr><th><br /><b>First Subject First Dose</b></th></tr>";
     } else if (numSubjects === 333) {
-      innerHtml += '<tr><th><br /><b>Last Subject First Dose</b></th></tr>';
+      innerHtml += "<tr><th><br /><b>Last Subject First Dose</b></th></tr>";
     } else {
-      innerHtml += '<tr><th><br /><b>' + numSubjects + ' subjects</b></th></tr>';
+      innerHtml +=
+        "<tr><th><br /><b>" + numSubjects + " subjects</b></th></tr>";
     }
-    innerHtml += '</thead><tbody>';
+    innerHtml += "</thead><tbody>";
 
-    innerHtml += '<tr><td>Lower</td><td>' + tooltip.dataPoints[1].label + '</td></tr>'
-    innerHtml += '<tr><td>Median</td><td>' + tooltip.dataPoints[0].label + '</td></tr>'
-    innerHtml += '<tr><td>Upper</td><td>' + tooltip.dataPoints[2].label + '</td></tr>'
+    innerHtml +=
+      "<tr><td>Lower</td><td>" + tooltip.dataPoints[1].label + "</td></tr>";
+    innerHtml +=
+      "<tr><td>Median</td><td>" + tooltip.dataPoints[0].label + "</td></tr>";
+    innerHtml +=
+      "<tr><td>Upper</td><td>" + tooltip.dataPoints[2].label + "</td></tr>";
 
-    innerHtml += '</tbody>';
+    innerHtml += "</tbody>";
 
-    var tableRoot = tooltipEl.querySelector('table');
+    var tableRoot = tooltipEl.querySelector("table");
     tableRoot.innerHTML = innerHtml;
   }
 
@@ -64,94 +68,96 @@ const customTooltips = function(tooltip) {
 
   // Display, position, and set styles for font
   tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = (positionX + tooltip.caretX) + 'px';
-  tooltipEl.style.top = (positionY + tooltip.caretY + 20) + 'px';
+  tooltipEl.style.left = positionX + tooltip.caretX + "px";
+  tooltipEl.style.top = positionY + tooltip.caretY + 20 + "px";
   tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-  tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+  tooltipEl.style.fontSize = tooltip.bodyFontSize + "px";
   tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-  tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+  tooltipEl.style.padding = tooltip.yPadding + "px " + tooltip.xPadding + "px";
 };
 
 const data = {
   datasets: [
     {
-      label: 'Median',
-      backgroundColor: colorMedian,
+      label: "Median",
+      pointBackgroundColor: colorMedian,
       borderColor: colorMedian,
       fill: false,
-      data: datas.median.filter(tens)
+      data: datas.median.filter(tens),
     },
     {
-      label: 'LowerBound',
-      backgroundColor: colorRangeFill,
+      label: "LowerBound",
+      pointBackgroundColor: colorRangeFill,
       borderColor: colorRangeBorder,
       fill: 0,
       pointRadius: 0,
-      data: datas.lower.filter(tens)
+      data: datas.lower.filter(tens),
     },
     {
-      label: 'UpperBound',
-      backgroundColor: colorRangeFill,
+      label: "UpperBound",
+      pointBackgroundColor: colorRangeFill,
       borderColor: colorRangeBorder,
       fill: 0,
       pointRadius: 0,
-      data: datas.upper.filter(tens)
-    }
-  ]
-}
+      data: datas.upper.filter(tens),
+    },
+  ],
+};
 
 const options = {
   title: {
-    text: 'Chart.js Time Scale'
+    text: "Chart.js Time Scale",
   },
   scales: {
-    xAxes: [{
-      type: 'time',
-      time: {
-        minUnit: 'month',
-        tooltipFormat: "ll",
-        displayFormats: {
-          month: 'MMM YY'
-        }
+    xAxes: [
+      {
+        type: "time",
+        time: {
+          minUnit: "month",
+          tooltipFormat: "ll",
+          displayFormats: {
+            month: "MMM YY",
+          },
+        },
+        gridLines: {
+          display: false,
+        },
+        scaleLabel: {
+          display: true,
+          labelString: "Date",
+        },
       },
-      gridLines: {
-        display: false
+    ],
+    yAxes: [
+      {
+        gridLines: {
+          display: false,
+        },
+        scaleLabel: {
+          display: true,
+          labelString: "subjects",
+        },
+        ticks: {
+          precision: 0,
+          stepSize: 50,
+          maxTicksLimit: 333,
+        },
       },
-      scaleLabel: {
-        display: true,
-        labelString: 'Date'
-      }
-    }],
-    yAxes: [{
-      gridLines: {
-        display: false
-      },
-      scaleLabel: {
-        display: true,
-        labelString: 'subjects'
-      },
-      ticks: {
-        precision: 0,
-        stepSize: 50,
-        maxTicksLimit: 333
-      }
-    }]
+    ],
   },
   legend: {
-    display: false
+    display: false,
   },
   tooltips: {
     enabled: false,
-    mode: 'index',
-    position: 'nearest',
-    custom: customTooltips
-  }
-}
+    mode: "index",
+    position: "nearest",
+    custom: customTooltips,
+  },
+};
 
 function EnrollmentChart() {
-  return (
-    <Line data={data} options={options} width={450} />
-  );
+  return <Line data={data} options={options} width={450} />;
 }
 
 export default EnrollmentChart;
